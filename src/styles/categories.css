@@ -1,0 +1,32 @@
+.category-block {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin: 8px;
+  min-height: 100px;
+  border-radius: 4px;
+}
+
+.category-block.drag-over {
+  background-color: #f0f0f0;
+  border: 2px dashed #666;
+}
+
+.draggable-field {
+  padding: 8px;
+  margin: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: move;
+}
+
+.draggable-field.dragging {
+  opacity: 0.5;
+}
+
+.categories-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+} 

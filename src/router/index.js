@@ -1,46 +1,45 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import salaryAdmin from './modules/salary'
+import salaryView from './modules/salary-view'
 
 const routes = [
   {
     path: '/',
-    redirect: '/salary/send'
+    redirect: '/salary-view'
   },
-  {
-    path: '/salary',
-    component: () => import('../views/Layout.vue'),
-    children: [
-      {
-        path: 'send',
-        name: 'SendSalary',
-        component: () => import('../views/salary/SendSalary.vue')
-      },
-      {
-        path: 'check',
-        name: 'SalaryCheck',
-        component: () => import('../views/salary/SalaryCheck.vue')
-      },
-      {
-        path: 'records',
-        name: 'SalaryRecords',
-        component: () => import('../views/salary/SalaryRecords.vue')
-      },
-      {
-        path: 'statistics',
-        name: 'Statistics',
-        component: () => import('../views/salary/Statistics.vue')
-      },
-      {
-        path: 'operations',
-        name: 'Operations',
-        component: () => import('../views/salary/Operations.vue')
-      }
-    ]
-  }
+  salaryAdmin, // 管理端路由
+  salaryView   // 员工端路由
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  console.log('路由跳转:', {
+    to: to.path,
+    from: from.path,
+    query: to.query
+  })
+  
+  // 检查是否需要验证
+  if (to.meta.requiresAuth) {
+    const isVerified = localStorage.getItem('salary_verified')
+    if (!isVerified) {
+      next({
+        path: '/salary-view/verify',
+        query: {
+          redirect: to.path,
+          ...to.query
+        }
+      })
+      return
+    }
+  }
+  
+  next()
 })
 
 export default router 
